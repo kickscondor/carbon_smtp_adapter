@@ -20,22 +20,21 @@ class Carbon::SmtpAdapter < Carbon::Adapter
     new_email = ::EMail::Message.new
     new_email.from email.from.address, email.from.name
 
-      email.to.each do |to_address|
+    email.to.each do |to_address|
       new_email.to(to_address.address, to_address.name)
-      end
-      email.cc.each do |cc_address|
+    end
+    email.cc.each do |cc_address|
       new_email.cc(cc_address.address, cc_address.name)
-      end
-      email.bcc.each do |bcc_address|
+    end
+    email.bcc.each do |bcc_address|
       new_email.bcc(bcc_address.address, bcc_address.name)
-      end
-
-      email.headers.each do |key, value|
+    end
+    email.headers.each do |key, value|
       new_email.custom_header(key, value)
-      end
+    end
     new_email.subject email.subject
-    new_email.message email.text_body
-    new_email.message_html email.html_body
+    new_email.message email.text_body.to_s
+    new_email.message_html email.html_body.to_s
 
     client.start do
       send(new_email)
